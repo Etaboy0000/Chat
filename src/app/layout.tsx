@@ -40,7 +40,7 @@ export default function RootLayout({
       <body className={`${itim.variable} antialiased`}>
         <div className="flex h-screen overflow-hidden bg-gray-50">
           <SidebarLeft />
-          <ConversationList />
+          <ConversationList isOpen={false} />
           <main className="flex-1 overflow-y-auto relative">
             {children}
           </main>
