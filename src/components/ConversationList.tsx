@@ -1,4 +1,17 @@
+"use client";
+
+import { useState } from 'react';
 import SearchBar from './SearchBar';
+
+interface Conversation {
+  id: string;
+  name: string;
+  message: string;
+  time: string;
+  avatar: string;
+  isOnline: boolean;
+  messageStatus: 'sent' | 'delivered' | 'read';
+}
 
 /**
  * Liste des conversations récentes
@@ -19,6 +32,7 @@ import SearchBar from './SearchBar';
  * 
  * Format des données attendu:
  * {
+ *   id: string,
  *   name: string,
  *   message: string,
  *   time: string,
@@ -28,16 +42,18 @@ import SearchBar from './SearchBar';
  * }
  */
 
-const conversations = [
+const conversations: Conversation[] = [
   {
+    id: "1",
     name: "Balbino Tchoutzine",
     message: "On se voit au campus demain ?",
     time: "10:30",
     avatar: "/pic1.jpg",
     isOnline: true,
-    messageStatus: 'read' // 'sent', 'delivered', 'read'
+    messageStatus: 'read'
   },
   {
+    id: "2",
     name: "Kamga Michel",
     message: "Le projet avance bien, merci",
     time: "10:25",
@@ -45,7 +61,9 @@ const conversations = [
     isOnline: false,
     messageStatus: 'delivered'
   },
+  // Ajout de plus de contacts camerounais
   {
+    id: "3",
     name: "Fotso Daniel",
     message: "J'ai terminé la partie backend",
     time: "10:20",
@@ -54,6 +72,7 @@ const conversations = [
     messageStatus: 'sent'
   },
   {
+    id: "4",
     name: "Nganso Kevin",
     message: "Tu peux m'aider avec React ?",
     time: "10:15",
@@ -62,6 +81,7 @@ const conversations = [
     messageStatus: 'read'
   },
   {
+    id: "5",
     name: "Tchamba Jordan",
     message: "La réunion est à quelle heure ?",
     time: "10:10",
@@ -70,12 +90,50 @@ const conversations = [
     messageStatus: 'delivered'
   },
   {
+    id: "6",
     name: "Nguimfack Sarah",
     message: "Je viens de push les changements",
     time: "10:05",
     avatar: "/pic6.jpg",
     isOnline: false,
     messageStatus: 'sent'
+  },
+  // Nouveaux contacts ajoutés
+  {
+    id: "7",
+    name: "Dongmo Patrick",
+    message: "Les maquettes sont prêtes",
+    time: "09:55",
+    avatar: "/pic7.jpg",
+    isOnline: true,
+    messageStatus: 'read'
+  },
+  {
+    id: "8",
+    name: "Tcheutchoua Jean",
+    message: "Réunion à 14h",
+    time: "09:45",
+    avatar: "/pic2.jpg",
+    isOnline: false,
+    messageStatus: 'delivered'
+  },
+  {
+    id: "9",
+    name: "Kuate Emmanuel",
+    message: "Je propose qu'on utilise Firebase",
+    time: "09:30",
+    avatar: "/pic5.jpg",
+    isOnline: true,
+    messageStatus: 'sent'
+  },
+  {
+    id: "10",
+    name: "Sokeng Marie",
+    message: "Le design est validé",
+    time: "09:15",
+    avatar: "/pic10.jpg",
+    isOnline: true,
+    messageStatus: 'read'
   }
 ];
 
@@ -120,20 +178,54 @@ const MessageStatus = ({ status }: { status: string }) => {
   }
 };
 
-export default function ConversationList() {
+export default function ConversationList({ isOpen }: { isOpen: boolean }) {
+  const [filteredConversations, setFilteredConversations] = useState<Conversation[]>(conversations);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+
+  const handleSearch = (term: string) => {
+    if (!term.trim()) {
+      setFilteredConversations(conversations);
+      return;
+    }
+
+    const filtered = conversations.filter(conv =>
+      conv.name.toLowerCase().includes(term.toLowerCase()) ||
+      conv.message.toLowerCase().includes(term.toLowerCase())
+    );
+    setFilteredConversations(filtered);
+  };
+
   return (
-    <div className="w-[30%] border-r border-snappy-gray flex flex-col h-full bg-snappy-white">
-      <div className="p-4 flex-none">
-        <h1 className="text-xl font-bold mb-4">Messages</h1>
-        <SearchBar />
+    <aside className={`
+      w-[320px] min-w-[320px] lg:w-[380px] h-screen bg-gray-50 border-r border-gray-200 
+      flex flex-col fixed transition-transform duration-300 ease-in-out
+      ${isOpen ? 'translate-x-[72px]' : '-translate-x-full'} 
+      md:translate-x-[72px] z-40
+    `}>
+      <div className="p-4 border-b bg-white">
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl font-bold text-gray-900">YowTalk</h1>
+          <span className="px-2 py-1 text-xs font-medium text-blue-600 bg-blue-100 rounded-full">Beta</span>
+        </div>
+        <SearchBar onSearch={handleSearch} />
       </div>
       
-      <div className="overflow-y-auto flex-1">
-        <div className="space-y-2 p-4">
-          {conversations.map((conv, index) => (
-            <div key={index} className="flex items-center p-3 hover:bg-snappy-gray/10 rounded-lg cursor-pointer">
-              <div className="relative">
-                <div className="w-12 h-12 rounded-full mr-3 overflow-hidden">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
+        <div className="space-y-1 p-2">
+          {filteredConversations.map((conv) => (
+            <div
+              key={conv.id}
+              onClick={() => setSelectedId(conv.id)}
+              onMouseEnter={() => setHoveredId(conv.id)}
+              onMouseLeave={() => setHoveredId(null)}
+              className={`flex items-center p-3 cursor-pointer transition-all duration-200 rounded-lg
+                ${selectedId === conv.id ? 'bg-blue-100 border-l-4 border-blue-500' : 'bg-white'}
+                ${hoveredId === conv.id ? 'transform scale-[0.995] shadow-sm' : ''}
+                hover:bg-blue-50`}
+            >
+              <div className="relative flex-shrink-0">
+                <div className="w-12 h-12 rounded-full overflow-hidden transition-transform duration-200 transform hover:scale-105 ring-2 ring-gray-100">
                   <img 
                     src={conv.avatar} 
                     alt={conv.name}
@@ -141,23 +233,21 @@ export default function ConversationList() {
                   />
                 </div>
                 {conv.isOnline && (
-                  <div className="absolute bottom-0 right-2 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+                  <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
                 )}
               </div>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0 ml-3">
                 <div className="flex justify-between items-start">
-                  <h3 className="font-medium">{conv.name}</h3>
-                  <div className="flex flex-col items-end">
-                    <span className="text-xs text-gray-500">{conv.time}</span>
-                    <MessageStatus status={conv.messageStatus} />
-                  </div>
+                  <h3 className="font-semibold text-gray-900 truncate">{conv.name}</h3>
+                  <span className="text-xs text-gray-600 flex-shrink-0 ml-2">{conv.time}</span>
                 </div>
-                <p className="text-sm text-gray-500 truncate">{conv.message}</p>
+                <p className="text-sm text-gray-700 truncate">{conv.message}</p>
+                <MessageStatus status={conv.messageStatus} />
               </div>
             </div>
           ))}
         </div>
       </div>
-    </div>
+    </aside>
   );
 }

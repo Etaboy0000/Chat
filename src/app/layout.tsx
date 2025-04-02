@@ -37,12 +37,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${itim.variable} antialiased flex h-screen`}>
-        <SidebarLeft />
-        <ConversationList />
-        <main className="flex-1">
-          {children}
-        </main>
+      <body className={`${itim.variable} antialiased`}>
+        <div className="flex h-screen overflow-hidden bg-gray-50">
+          <SidebarLeft />
+          <ConversationList />
+          <main className="flex-1 overflow-y-auto relative">
+            {children}
+          </main>
+        </div>
       </body>
     </html>
   );
