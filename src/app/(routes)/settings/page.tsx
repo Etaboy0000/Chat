@@ -57,7 +57,7 @@ export default function SettingsPage() {
 								}
 								className="sr-only peer"
 							/>
-							<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+							<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
 						</label>
 					</div>
 
@@ -72,7 +72,7 @@ export default function SettingsPage() {
 								}
 								className="sr-only peer"
 							/>
-							<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+							<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
 						</label>
 					</div>
 
@@ -85,7 +85,7 @@ export default function SettingsPage() {
 								onChange={(e) => handleSettingChange("darkMode", e.target.checked)}
 								className="sr-only peer"
 							/>
-							<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+							<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
 						</label>
 					</div>
 
@@ -94,7 +94,7 @@ export default function SettingsPage() {
 						<select
 							value={settings.language}
 							onChange={(e) => handleSettingChange("language", e.target.value)}
-							className="p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+							className="p-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
 						>
 							<option value="fr">Français</option>
 							<option value="en">English</option>
@@ -106,7 +106,7 @@ export default function SettingsPage() {
 						<select
 							value={settings.status}
 							onChange={(e) => handleSettingChange("status", e.target.value)}
-							className="p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+							className="p-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
 						>
 							<option value="active">Actif</option>
 							<option value="away">Absent</option>

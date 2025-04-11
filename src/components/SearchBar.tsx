@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * Composant de recherche
  *
@@ -13,40 +11,67 @@
  * - Indexation des messages
  * - Cache des résultats fréquents
  */
+"use client";
 
 import { useState, useEffect, useRef } from "react";
 
 interface SearchProps {
-	onSearch: (term: string) => void;
-	suggestions?: string[];
+	onSearch: (term: string) => Promise<void>;
 	placeholder?: string;
 }
 
 export default function SearchBar({
-	onSearch,
-	//suggestions = [],
-	placeholder = "Rechercher des messages ou contacts...",
-}: SearchProps) {
+									  onSearch,
+									  placeholder = "Rechercher des messages ou contacts...",
+								  }: SearchProps) {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [isSearching, setIsSearching] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
+	const debounceRef = useRef<NodeJS.Timeout>();
 
-	// Debounce pour la recherche
-	useEffect(() => {
-		const debounceTimer = setTimeout(() => {
-			if (searchTerm) {
+	// Gestionnaire de recherche debounced
+	const handleSearch = async (term: string) => {
+		try {
+			if (term.trim()) {
 				setIsSearching(true);
-				onSearch(searchTerm);
-				setTimeout(() => setIsSearching(false), 300);
+				await onSearch(term);
+			} else {
+				await onSearch("");
 			}
-		}, 200);
+		} catch (error) {
+			console.error("Erreur durant la recherche:", error);
+		} finally {
+			setIsSearching(false);
+		}
+	};
 
-		return () => clearTimeout(debounceTimer);
-	}, [searchTerm, onSearch]);
+	// Effect pour le debounce
+	useEffect(() => {
+		if (debounceRef.current) {
+			clearTimeout(debounceRef.current);
+		}
 
+		if (searchTerm === "") {
+			handleSearch("");
+			return;
+		}
+
+		debounceRef.current = setTimeout(() => {
+			handleSearch(searchTerm);
+		}, 300);
+
+		return () => {
+			if (debounceRef.current) {
+				clearTimeout(debounceRef.current);
+			}
+		};
+	}, [searchTerm]);
+
+	// Gestionnaire de nettoyage
 	const clearSearch = () => {
 		setSearchTerm("");
-		onSearch(""); // Réinitialise la recherche
+		setIsSearching(false);
+		handleSearch("");
 		if (inputRef.current) {
 			inputRef.current.focus();
 		}
@@ -61,13 +86,13 @@ export default function SearchBar({
 					value={searchTerm}
 					onChange={(e) => setSearchTerm(e.target.value)}
 					placeholder={placeholder}
-					className="w-full p-2 pl-10 pr-10 text-gray-900 placeholder-gray-500 
-            border border-gray-200 rounded-lg 
-            focus:outline-none focus:ring-2 focus:ring-blue-500 
+					className="w-full p-2 pl-10 pr-10 text-gray-900 placeholder-gray-500
+            border border-gray-200 rounded-lg
+            focus:outline-none focus:ring-2 focus:ring-purple-500
             transition-all bg-white"
 				/>
 
-				{/* Icône de recherche ou loader */}
+				{/* Icône de recherche/chargement */}
 				<div className="absolute left-3 top-2.5">
 					{isSearching ? (
 						<svg
@@ -107,11 +132,12 @@ export default function SearchBar({
 					)}
 				</div>
 
-				{/* Bouton pour effacer */}
+				{/* Bouton de nettoyage */}
 				{searchTerm && (
 					<button
 						onClick={clearSearch}
 						className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+						type="button"
 					>
 						<svg
 							className="h-5 w-5"

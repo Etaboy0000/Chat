@@ -3,6 +3,9 @@
 import { useState } from "react";
 import SearchBar from "./SearchBar";
 
+// Définir un type pour MessageStatus pour plus de cohérence
+type MessageStatusType = "sent" | "delivered" | "read";
+
 interface Conversation {
 	id: string;
 	name: string;
@@ -10,7 +13,13 @@ interface Conversation {
 	time: string;
 	avatar: string;
 	isOnline: boolean;
-	messageStatus: "sent" | "delivered" | "read";
+	messageStatus: MessageStatusType;
+}
+
+interface ConversationListProps {
+	onSelectConversation: (id: string) => void;
+	selectedId: string | null;
+	isOpen?: boolean;
 }
 
 /**
@@ -29,17 +38,6 @@ interface Conversation {
  * - Système de recherche
  * - Stockage et récupération des images
  * - Gestion des timestamps
- *
- * Format des données attendu:
- * {
- *   id: string,
- *   name: string,
- *   message: string,
- *   time: string,
- *   avatar: string,
- *   isOnline?: boolean,
- *   unreadCount?: number
- * }
  */
 
 const conversations: Conversation[] = [
@@ -61,7 +59,7 @@ const conversations: Conversation[] = [
 		isOnline: false,
 		messageStatus: "delivered",
 	},
-	// Ajout de plus de contacts camerounais
+	// Autres conversations mockées pour le développement
 	{
 		id: "3",
 		name: "Fotso Daniel",
@@ -98,7 +96,6 @@ const conversations: Conversation[] = [
 		isOnline: false,
 		messageStatus: "sent",
 	},
-	// Nouveaux contacts ajoutés
 	{
 		id: "7",
 		name: "Dongmo Patrick",
@@ -137,7 +134,7 @@ const conversations: Conversation[] = [
 	},
 ];
 
-const MessageStatus = ({ status }: { status: string }) => {
+const MessageStatus = ({ status }: { status: MessageStatusType }) => {
 	switch (status) {
 		case "sent":
 			return (
@@ -173,14 +170,14 @@ const MessageStatus = ({ status }: { status: string }) => {
 				<div className="flex justify-end mt-0.5">
 					<div className="relative flex">
 						<svg
-							className="w-3 h-3 text-snappy-first-blue"
+							className="w-3 h-3 text-Purple-500"
 							viewBox="0 0 24 24"
 							fill="currentColor"
 						>
 							<path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" />
 						</svg>
 						<svg
-							className="w-3 h-3 text-snappy-first-blue -ml-1"
+							className="w-3 h-3 text-Purple-500 -ml-1"
 							viewBox="0 0 24 24"
 							fill="currentColor"
 						>
@@ -194,91 +191,65 @@ const MessageStatus = ({ status }: { status: string }) => {
 	}
 };
 
-export default function ConversationList({ isOpen }: { isOpen: boolean }) {
-	const [filteredConversations, setFilteredConversations] =
-		useState<Conversation[]>(conversations);
-	const [selectedId, setSelectedId] = useState<string | null>(null);
-	const [hoveredId, setHoveredId] = useState<string | null>(null);
+export default function ConversationList({
+	onSelectConversation,
+	selectedId,
+	isOpen,
+}: ConversationListProps) {
+	const [searchQuery, setSearchQuery] = useState("");
 
-	// ---
-	const hey = (id: string) => {
-		setSelectedId(id);
-		console.log("Hey");
+	// Définir une fonction wrapper qui correspond au type attendu
+	const handleSearch = async (term: string): Promise<void> => {
+		setSearchQuery(term);
 	};
-	// ---
 
-	const handleSearch = (term: string) => {
-		if (!term.trim()) {
-			setFilteredConversations(conversations);
-			return;
-		}
-
-		const filtered = conversations.filter(
-			(conv) =>
-				conv.name.toLowerCase().includes(term.toLowerCase()) ||
-				conv.message.toLowerCase().includes(term.toLowerCase())
-		);
-		setFilteredConversations(filtered);
-	};
+	// Filtrer les conversations en fonction de la recherche
+	const filteredConversations = conversations.filter((conv) =>
+		conv.name.toLowerCase().includes(searchQuery.toLowerCase())
+	);
 
 	return (
-		<aside
-			className={`w-[320px] min-w-[320px] lg:w-[380px] h-screen bg-gray-50 border-r border-gray-200
-				flex flex-col fixed transition-transform duration-300 ease-in-out
-				${isOpen ? "translate-x-[72px]" : "-translate-x-full"}
-				md:translate-x-[72px] z-40`}
-		>
-			<div className="p-4 border-b bg-white">
-				<div className="flex items-center justify-between mb-4">
-					<h1 className="text-2xl font-bold text-gray-900">YowTalk</h1>
-					<span className="px-2 py-1 text-xs font-medium text-blue-600 bg-blue-100 rounded-full">
-						Beta
-					</span>
-				</div>
+		<div className="flex flex-col h-full">
+			<div className="p-4">
 				<SearchBar onSearch={handleSearch} />
 			</div>
 
-			<div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
-				<div className="space-y-1 p-2">
-					{filteredConversations.map((conv) => (
-						<div
-							key={conv.id}
-							onClick={() => hey(conv.id)} // ---
-							onMouseEnter={() => setHoveredId(conv.id)}
-							onMouseLeave={() => setHoveredId(null)}
-							className={`flex items-center p-3 cursor-pointer transition-all duration-200 rounded-lg
-								${selectedId === conv.id ? "bg-blue-100 border-l-4 border-blue-500" : "bg-white"}
-								${hoveredId === conv.id ? "transform scale-[0.995] shadow-sm" : ""}
-								hover:bg-blue-50`}
-						>
-							<div className="relative flex-shrink-0">
-								<div className="w-12 h-12 rounded-full overflow-hidden transition-transform duration-200 transform hover:scale-105 ring-2 ring-gray-100">
-									<img
-										src={conv.avatar}
-										alt={conv.name}
-										className="w-full h-full object-cover"
-									/>
-								</div>
-								{conv.isOnline && (
-									<div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
-								)}
+			<div className="overflow-y-auto flex-1">
+				{filteredConversations.map((conversation) => (
+					<div
+						key={conversation.id}
+						className={`flex items-center p-4 hover:bg-purple-500 cursor-pointer ${
+							selectedId === conversation.id ? "bg-Purple-50" : ""
+						}`}
+						onClick={() => onSelectConversation(conversation.id)}
+					>
+						<div className="relative">
+							<img
+								src={conversation.avatar}
+								alt={conversation.name}
+								className="w-12 h-12 rounded-full object-cover"
+							/>
+							{conversation.isOnline && (
+								<div className="absolute bottom-0 right-0 w-3 h-3 bg-purple-500 rounded-full border-2 border-purple"></div>
+							)}
+						</div>
+
+						<div className="ml-3 flex-1">
+							<div className="flex justify-between">
+								<h3 className="font-semibold text-black ">{conversation.name}</h3>
+								<span className="text-xs text-gray-500">{conversation.time}</span>
 							</div>
-							<div className="flex-1 min-w-0 ml-3">
-								<div className="flex justify-between items-start">
-									<h3 className="font-semibold text-gray-900 truncate">
-										{conv.name}
-									</h3>
-									<span className="text-xs text-gray-600 flex-shrink-0 ml-2">
-										{conv.time}
-									</span>
-								</div>
-								<p className="text-sm text-gray-700 truncate">{conv.message}</p>
-								<MessageStatus status={conv.messageStatus} />
+
+							<div className="flex justify-between mt-1">
+								<p className="text-sm text-gray-600 truncate max-w-[170px]">
+									{conversation.message}
+								</p>
+								<MessageStatus status={conversation.messageStatus} />
 							</div>
 						</div>
-					))}
-				</div>
+					</div>
+				))}
 			</div>
-		</aside>
+		</div>
 	);
 }

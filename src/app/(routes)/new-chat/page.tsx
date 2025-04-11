@@ -49,7 +49,7 @@ export default function NewChatPage() {
 								<span
 									className={`text-sm ${
 										contact.status === "online"
-											? "text-green-500"
+											? "text-purple-500"
 											: "text-gray-500"
 									}`}
 								>

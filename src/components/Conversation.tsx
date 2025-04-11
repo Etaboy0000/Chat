@@ -73,7 +73,7 @@ export default function Conversation() {
 				return "bg-orange-500";
 
 			case 2:
-				return "bg-green-500";
+				return "bg-purple-500";
 
 			default:
 				return "bg-orange-500";

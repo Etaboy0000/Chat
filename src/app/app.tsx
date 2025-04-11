@@ -17,7 +17,7 @@ export default function HomePage() {
 			<div className="text-center">
 				<h1 className="text-4xl font-bold text-gray-900 mb-4">Bienvenue sur YowTalk</h1>
 				<p className="text-gray-600 mb-8">Chargement de votre espace...</p>
-				<div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
+				<div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500 mx-auto"></div>
 			</div>
 		</div>
 	);

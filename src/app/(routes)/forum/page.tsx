@@ -33,7 +33,7 @@ export default function AddContactPage() {
 				<h1 className="text-2xl font-bold">Ajouter un contact</h1>
 				<button
 					onClick={() => setIsAdding(true)}
-					className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+					className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
 				>
 					Nouveau contact
 				</button>
@@ -53,7 +53,7 @@ export default function AddContactPage() {
 								onChange={(e) =>
 									setNewContact({ ...newContact, name: e.target.value })
 								}
-								className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+								className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
 								placeholder="John Doe"
 							/>
 						</div>
@@ -69,7 +69,7 @@ export default function AddContactPage() {
 								onChange={(e) =>
 									setNewContact({ ...newContact, email: e.target.value })
 								}
-								className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+								className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
 								placeholder="john@example.com"
 							/>
 						</div>
@@ -84,7 +84,7 @@ export default function AddContactPage() {
 								onChange={(e) =>
 									setNewContact({ ...newContact, phone: e.target.value })
 								}
-								className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+								className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
 								placeholder="+33 6 12 34 56 78"
 							/>
 						</div>
@@ -98,7 +98,7 @@ export default function AddContactPage() {
 								onChange={(e) =>
 									setNewContact({ ...newContact, group: e.target.value })
 								}
-								className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+								className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-purple-500"
 							>
 								<option value="friends">Amis</option>
 								<option value="family">Famille</option>
@@ -117,7 +117,7 @@ export default function AddContactPage() {
 							</button>
 							<button
 								type="submit"
-								className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+								className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
 							>
 								Ajouter
 							</button>

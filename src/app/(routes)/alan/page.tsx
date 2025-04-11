@@ -55,7 +55,7 @@ export default function AlanPage() {
 				<button
 					onClick={() => handleModeChange("listen")}
 					className={`p-3 rounded-full ${
-						mode === "listen" ? "bg-green-500 text-white" : "bg-gray-100"
+						mode === "listen" ? "bg-purple-500 text-white" : "bg-gray-100"
 					}`}
 					title="Mode écoute"
 				>
@@ -89,7 +89,7 @@ export default function AlanPage() {
 				<button
 					onClick={() => handleModeChange("write")}
 					className={`p-3 rounded-full ${
-						mode === "write" ? "bg-blue-500 text-white" : "bg-gray-100"
+						mode === "write" ? "bg-purple-500 text-white" : "bg-gray-100"
 					}`}
 					title="Mode écriture"
 				>
@@ -117,7 +117,7 @@ export default function AlanPage() {
 							<div
 								className={`max-w-sm p-4 rounded-lg ${
 									message.sender === "user"
-										? "bg-blue-500 text-white"
+										? "bg-purple-500 text-white"
 										: "bg-white border"
 								}`}
 							>
@@ -148,12 +148,12 @@ export default function AlanPage() {
 									: "Écrivez votre message..."
 						}
 						disabled={mode !== "write"}
-						className="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+						className="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
 					/>
 					<button
 						onClick={() => handleSendMessage(inputText)}
 						disabled={mode !== "write" || !inputText.trim()}
-						className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+						className="px-6 py-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 disabled:opacity-50 disabled:cursor-not-allowed"
 					>
 						Envoyer
 					</button>

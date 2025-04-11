@@ -50,7 +50,7 @@ export default function ProfilePage() {
 		<div className="max-w-4xl mx-auto p-6">
 			<div className="bg-white rounded-lg shadow-lg overflow-hidden">
 				{/* Cover Image */}
-				<div className="h-32 bg-gradient-to-r from-blue-600 to-blue-800"></div>
+				<div className="h-32 bg-gradient-to-r from-purple-600 to-purple-800"></div>
 
 				<div className="relative px-6 py-8">
 					{/* Avatar */}
@@ -63,7 +63,7 @@ export default function ProfilePage() {
 							/>
 							<div
 								className={`absolute bottom-2 right-2 w-4 h-4 rounded-full border-2 border-white
-                ${profile.status === "online" ? "bg-green-500" : "bg-gray-400"}`}
+                ${profile.status === "online" ? "bg-purple-500" : "bg-gray-400"}`}
 							></div>
 						</div>
 					</div>
@@ -78,7 +78,7 @@ export default function ProfilePage() {
 									onChange={(e) =>
 										setEditedProfile({ ...editedProfile, name: e.target.value })
 									}
-									className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+									className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
 								/>
 								<input
 									type="email"
@@ -89,14 +89,14 @@ export default function ProfilePage() {
 											email: e.target.value,
 										})
 									}
-									className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+									className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
 								/>
 								<textarea
 									value={editedProfile.bio}
 									onChange={(e) =>
 										setEditedProfile({ ...editedProfile, bio: e.target.value })
 									}
-									className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+									className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
 									rows={3}
 								/>
 							</div>
@@ -112,7 +112,7 @@ export default function ProfilePage() {
 								<>
 									<button
 										onClick={handleSave}
-										className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+										className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
 									>
 										Enregistrer
 									</button>
@@ -126,7 +126,7 @@ export default function ProfilePage() {
 							) : (
 								<button
 									onClick={() => setIsEditing(true)}
-									className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+									className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
 								>
 									Modifier le profil
 								</button>

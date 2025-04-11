@@ -11,7 +11,11 @@ interface NavItem {
 	onClick?: () => void;
 }
 
-export default function SidebarLeft() {
+interface SidebarLeftProps {
+	onToggleConversationList : (isOpen: boolean) => void;
+}
+
+export default function SidebarLeft({ onToggleConversationList }: SidebarLeftProps) {
 	const router = useRouter();
 	const [activeItem, setActiveItem] = useState<string>("/profile");
 	const [isConversationListOpen, setIsConversationListOpen] = useState(false);
@@ -21,14 +25,16 @@ export default function SidebarLeft() {
 		if (callback) {
 			callback();
 		} else {
-			setIsConversationListOpen(false);
+			onToggleConversationList?.(false); // Ferme la liste lors de la navigation
 			router.push(path);
 		}
 	};
-
 	const toggleConversationList = () => {
-		setIsConversationListOpen(!isConversationListOpen);
+		if (onToggleConversationList) {
+			onToggleConversationList(true);
+		}
 	};
+
 
 	// Icônes personnalisées SVG
 	const Icons = {
@@ -91,7 +97,7 @@ export default function SidebarLeft() {
 						alt="Profile"
 						className="w-full h-full rounded-full object-cover transition-shadow duration-200 hover:shadow-[0_0_8px_rgba(59,130,246,0.4)]"
 					/>
-					<div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-gray-900"></div>
+					<div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-purple-500 rounded-full border-2 border-gray-900"></div>
 				</div>
 			),
 		},
@@ -122,36 +128,36 @@ export default function SidebarLeft() {
 		},
 	];
 
+	// SidebarLeft.tsx - Modifications principales
 	return (
-		<div className="w-[72px] h-screen bg-gray-900 flex flex-col items-center justify-between py-4 fixed left-0 top-0 z-50">
-			<div className="flex flex-col items-center space-y-8">
-				{navItems.map((item) => (
+		<div className="fixed left-0 top-0 h-full w-14 sm:w-[72px]
+                  bg-gray-900 flex flex-col items-center justify-between
+                  py-4 z-40">
+			<div className="space-y-2">
+				{navItems.map((item, index) => (
 					<button
 						key={item.path}
 						onClick={() => handleNavigation(item.path, item.onClick)}
-						className={`relative ${
-							item.path === "/profile"
-								? "p-0 hover:bg-transparent"
-								: `p-3 rounded-lg transition-all duration-200 ${
-										activeItem === item.path
-											? "bg-gray-800 text-white scale-110"
-											: "text-gray-400 hover:text-white hover:bg-gray-800/50"
-									}`
-						}`}
+						className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-200
+            ${
+							activeItem === item.path
+								? "bg-snappy-first-purple text-white"
+								: "text-gray-400 hover:bg-gray-800 hover:text-white"
+						}
+          `}
 						title={item.label}
 					>
 						{item.icon}
+						{item.hasNotification && (
+							<span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+						)}
 					</button>
 				))}
 			</div>
 
 			<button
 				onClick={() => handleNavigation("/settings")}
-				className={`p-3 rounded-lg transition-all duration-200 ${
-					activeItem === "/settings"
-						? "bg-gray-800 text-white scale-110"
-						: "text-gray-400 hover:text-white hover:bg-gray-800/50"
-				}`}
+				className="w-10 h-10 flex items-center justify-center rounded-xl text-gray-400 hover:bg-gray-800 hover:text-white transition-all duration-200"
 				title="Paramètres"
 			>
 				<Icons.Settings />
