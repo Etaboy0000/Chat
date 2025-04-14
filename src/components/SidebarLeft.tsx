@@ -128,40 +128,28 @@ export default function SidebarLeft({ onToggleConversationList }: SidebarLeftPro
 		},
 	];
 
-	// SidebarLeft.tsx - Modifications principales
+	// Voici le return corrigé avec le JSX complet
 	return (
-		<div className="fixed left-0 top-0 h-full w-14 sm:w-[72px]
-                  bg-gray-900 flex flex-col items-center justify-between
-                  py-4 z-40">
-			<div className="space-y-2">
-				{navItems.map((item, index) => (
-					<button
+		<div className="h-full w-16 flex flex-col bg-gray-800 text-white shrink-0">
+			<div className="flex flex-col items-center space-y-6 py-6">
+				{navItems.map((item) => (
+					<div
 						key={item.path}
-						onClick={() => handleNavigation(item.path, item.onClick)}
-						className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-200
-            ${
+						className={`relative cursor-pointer transition-colors duration-200 ${
 							activeItem === item.path
-								? "bg-snappy-first-purple text-white"
-								: "text-gray-400 hover:bg-gray-800 hover:text-white"
-						}
-          `}
+								? "text-purple-500"
+								: "text-gray-400 hover:text-gray-200"
+						}`}
+						onClick={() => handleNavigation(item.path, item.onClick)}
 						title={item.label}
 					>
 						{item.icon}
 						{item.hasNotification && (
-							<span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+							<div className="absolute top-0 right-0 w-2 h-2 bg-purple-500 rounded-full"></div>
 						)}
-					</button>
+					</div>
 				))}
 			</div>
-
-			<button
-				onClick={() => handleNavigation("/settings")}
-				className="w-10 h-10 flex items-center justify-center rounded-xl text-gray-400 hover:bg-gray-800 hover:text-white transition-all duration-200"
-				title="Paramètres"
-			>
-				<Icons.Settings />
-			</button>
 		</div>
 	);
 }

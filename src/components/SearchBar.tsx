@@ -16,7 +16,7 @@
 import { useState, useEffect, useRef } from "react";
 
 interface SearchProps {
-	onSearch: (term: string) => Promise<void>;
+	onSearch: (term: string) => (value: (((prevState: string) => string) | string)) => void;
 	placeholder?: string;
 }
 
